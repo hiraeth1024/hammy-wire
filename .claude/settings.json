@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r \"components/ui/Categories\\\\|components/ui/CTA\" src/)",
+      "Bash(grep -r \"components/site/Categories\\\\|components/site/CTA\" src/)",
+      "Bash(node --version && which nvm 2>/dev/null; ls /usr/local/bin/node* 2>/dev/null; which node)",
+      "Read(//usr/local/bin/**)",
+      "Bash(git init *)",
+      "Bash(git -C /Users/hybuzhy/Workspace/hammy-wire status)",
+      "Bash(git -C /Users/hybuzhy/Workspace/hammy-wire add .gitignore CLAUDE.md frontend/)",
+      "Bash(git -C /Users/hybuzhy/Workspace/hammy-wire commit -m ' *)"
+    ]
+  }
+}
