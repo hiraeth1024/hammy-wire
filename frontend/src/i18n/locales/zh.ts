@@ -1,0 +1,204 @@
+import type { Translations } from "../types";
+
+const zh: Translations = {
+  nav: {
+    home: "首页",
+    shop: "店铺",
+    about: "关于我们",
+    contact: "联系我们",
+    inquiry: "询价",
+    langLabel: "EN",
+  },
+  hero: {
+    eyebrow: "Hammy · Series 01",
+    title1: "极限耐用",
+    title2: "护套工艺",
+    subtitle: "环保 PVC 材质，柔韧耐用，为每一次连接提供可靠保护。",
+    stats: ["30+ 年行业经验", "ISO 9001 认证", "覆盖 50+ 国家", "100% 纯铜导体"],
+    scrollHint: "滚动",
+  },
+  products: {
+    eyebrow: "产品系列",
+    title: "精工制造，从铜芯到护套。",
+    viewSpecs: "查看规格",
+    items: [
+      {
+        name: "RVV 软护套电缆",
+        tag: "电源",
+        desc: "多芯 PVC 护套柔性电缆，适用于工业设备、照明及家用供电线路，兼顾柔韧性与防护性能。",
+        specs: [
+          { label: "芯数", value: "2 – 24" },
+          { label: "截面", value: "0.5 – 10 mm²" },
+          { label: "电压", value: "300 / 500 V" },
+          { label: "护套", value: "环保 PVC" },
+        ],
+      },
+      {
+        name: "RVS 双绞软线",
+        tag: "信号",
+        desc: "双绞柔性电线，抗干扰性能优异，广泛用于消防报警、广播及低压信号传输。",
+        specs: [
+          { label: "芯数", value: "2（双绞）" },
+          { label: "截面", value: "0.5 – 2.5 mm²" },
+          { label: "电压", value: "300 / 300 V" },
+          { label: "护套", value: "PVC" },
+        ],
+      },
+      {
+        name: "六类网线",
+        tag: "网络",
+        desc: "六类以太网线缆，确保千兆传输稳定可靠。纯无氧铜导体，精密对绞工艺。",
+        specs: [
+          { label: "带宽", value: "250 MHz" },
+          { label: "速率", value: "1 Gbps" },
+          { label: "线对", value: "4（UTP / FTP）" },
+          { label: "长度", value: "305m / 箱" },
+        ],
+      },
+      {
+        name: "双绞通信线",
+        tag: "通信",
+        desc: "高纯度铜双绞线，适用于通信及仪表设备。紧密绞合大幅降低串扰。",
+        specs: [
+          { label: "线对", value: "1 – 100" },
+          { label: "线规", value: "AWG 22 – 26" },
+          { label: "屏蔽", value: "UTP / STP" },
+          { label: "用途", value: "通信专用" },
+        ],
+      },
+    ],
+  },
+  testimonials: {
+    eyebrow: "客户声音",
+    title: "全球信赖，口碑见证。",
+    items: [
+      {
+        name: "M. Schneider",
+        role: "采购经理 · BauTech GmbH",
+        country: "德国",
+        text: "Hammy RVV 的护套质量是我们 12 年来采购过最好的。安装 40,000 米零故障。",
+      },
+      {
+        name: "Aarav Patel",
+        role: "项目主管 · Infinite Networks",
+        country: "印度",
+        text: "他们的六类线在 90 米距离上稳定跑千兆，包装和一致性都非常出色。",
+      },
+      {
+        name: "L. Costa",
+        role: "创始人 · Costa Eletrica",
+        country: "巴西",
+        text: "纯铜材质，线径精准，价格合理。Hammy 已成为我们的默认供应商。",
+      },
+      {
+        name: "陈先生",
+        role: "项目经理 · 华东电气",
+        country: "中国",
+        text: "RVS 双绞软线非常稳定，工地反馈良好，复购了 6 次。",
+      },
+      {
+        name: "Y. Tanaka",
+        role: "工程师 · Kobe Systems",
+        country: "日本",
+        text: "公差控制精准，屏蔽层干净整洁。文档详尽且准确。",
+      },
+      {
+        name: "S. El-Amin",
+        role: "经销商 · Cairo Cables",
+        country: "埃及",
+        text: "交期可靠，团队几小时内就能回复。顶级 OEM 合作伙伴。",
+      },
+    ],
+  },
+  categories: {
+    eyebrow: "产品分类",
+    title: "每一种应用，都有对应的线缆。",
+    subtitle: "四大核心品类——电源、信号、网络和通信。全部采用同一标准的无妥协纯铜。",
+    items: [
+      {
+        name: "RVV 电源线",
+        desc: "柔性 PVC 护套多芯电力线缆，适用工业与家用场景。",
+        spec: "0.5 – 10 mm² · 2-24 芯",
+      },
+      {
+        name: "RVS 信号线",
+        desc: "抗干扰双绞线，适用于低压信号系统。",
+        spec: "0.5 – 2.5 mm² · 2 芯",
+      },
+      {
+        name: "六类网线",
+        desc: "千兆以太网线，无氧铜导体，稳定高速。",
+        spec: "250MHz · 305 米/箱",
+      },
+      {
+        name: "双绞通信线",
+        desc: "通信及仪表线缆，紧密绞合降低串扰。",
+        spec: "AWG 22-26 · UTP / STP",
+      },
+    ],
+  },
+  quality: {
+    eyebrow: "品质保障",
+    titlePrefix: "值得",
+    titleHighlight: "信赖",
+    titleSuffix: "的品质。",
+    desc: "每一卷 Hammy 线缆都经过上千道质量检测——从铜纯度、绞距、绝缘厚度到高压火花与老化测试，无一遗漏。",
+    certs: ["ISO 9001", "ISO 14001", "CE", "RoHS", "CCC", "UL"],
+    stats: [
+      { value: "1000+", label: "质量检测点" },
+      { value: "100%", label: "纯铜线芯" },
+      { value: "30年", label: "质保承诺" },
+    ],
+  },
+  cta: {
+    titlePrefix: "用 Hammy",
+    titleHighlight: "驱动",
+    titleSuffix: "你的项目。",
+    desc: "申请样品、询价 OEM 或与工程师沟通，我们会在 24 小时内回复。",
+    quoteBtn: "立即询价",
+    browseBtn: "浏览产品",
+  },
+  footer: {
+    brandDesc: "高端电线电缆制造商，纯铜导体与卓越 PVC 护套，值得信赖的品质。",
+    columns: [
+      {
+        title: "我们的品牌",
+        items: ["关于 Hammy", "品牌故事", "新闻动态", "可持续发展"],
+      },
+      {
+        title: "我们的门店",
+        items: ["上海旗舰店", "深圳展示中心", "义乌批发店", "海外经销商"],
+      },
+      {
+        title: "信息",
+        items: ["产品分类", "证书与资质", "技术博客", "下载中心"],
+      },
+      {
+        title: "致客户",
+        items: ["售后服务", "退换货政策", "物流与发货", "常见问题"],
+      },
+    ],
+    contactLabel: "联系方式",
+    headquartersLabel: "总部地址",
+    hoursLabel: "工作时间",
+    contactPhone: "+86 574 1234 5678",
+    contactEmail: "sales@hammy.example",
+    headquartersName: "Hammy 电缆工业园",
+    headquartersAddr: "浙江省宁波市铜业大道 88 号",
+    hoursValue: "周一至周六 · 09:00 – 18:00",
+    hoursNote: "全球客服 · 邮件 24 小时",
+    privacy: "隐私政策",
+    terms: "服务条款",
+    icp: "浙ICP备 0000000 号",
+  },
+  placeholder: {
+    comingSoon: "即将上线",
+  },
+  notFound: {
+    title: "404",
+    message: "哎呀！页面未找到",
+    link: "返回首页",
+  },
+};
+
+export default zh;
