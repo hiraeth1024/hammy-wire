@@ -32,6 +32,7 @@ hammy-wire/
 │   │   │   ├── context.tsx     # LocaleProvider + useLocale / useT
 │   │   │   ├── types.ts       # Translations 类型定义
 │   │   │   └── locales/       # zh.ts / en.ts 翻译文件
+│   │   ├── data/              # 模拟数据（API 就绪后移除）
 │   │   ├── lib/               # 工具函数
 │   │   ├── assets/            # 产品图片等静态资源
 │   │   └── test/              # 测试文件
@@ -153,6 +154,18 @@ grid + gap-px bg-border + border border-border + rounded-2xl overflow-hidden
 - `animate-bounce-down`：箭头跳动，2s ease-in-out infinite
 - 滚动驱动：ProductPinScroll 通过 `useEffect` + scroll 事件监听实现水平平移
 
+**店铺页**（[Shop.tsx](frontend/src/pages/Shop.tsx)、[ShopFilterSidebar.tsx](frontend/src/components/site/ShopFilterSidebar.tsx)、[ShopProductGrid.tsx](frontend/src/components/site/ShopProductGrid.tsx)、[ShopProductCard.tsx](frontend/src/components/site/ShopProductCard.tsx)）：
+- 1:3 左右布局（`flex-col lg:flex-row`），左侧 sticky 筛选栏，右侧商品展示
+- 顶部 Hero Banner：背景图 `shop.png`（或 `shop-bg.png`）+ 渐变叠加 + 标题
+- **筛选栏**：价格区间（min/max input + 应用按钮）、品类下拉框（shadcn Select）、品牌下拉框，顶部"清除全部"
+- **排序**：默认 / 销量 / 价格高→低 / 价格低→高 / 新品上市（shadcn Select）
+- **网格切换**：2×2 / 3×3 / 4×4 按钮组，控制 `grid-cols`（默认 3×3）
+- **激活筛选标签**：铜色 chip，可逐个移除（✕）
+- **商品卡片**：`aspect-[4/3]` 产品图、品类 badge、NEW 标记（`isNew`）、品牌名、中/英名称（按 locale）、价格 `¥x.xx`、销量
+- **分页**：每页 9 件，页码按钮 + 上/下一页
+- **状态管理**：filter / sort / gridSize / page 状态集中在 `Shop.tsx`，通过 props 下发
+- **模拟数据**：`src/data/products.ts` — 20 件横跨 4 品类 × 5 品牌的 mock 产品，含 `filterAndSort()` 工具函数
+
 ### 国际化 (i18n)
 
 使用轻量 `LocaleContext` + 嵌套翻译对象，无第三方依赖。
@@ -173,16 +186,106 @@ grid + gap-px bg-border + border border-border + rounded-2xl overflow-hidden
 
 ### Supabase 核心表设计
 
-- `products` — 产品主表（name, slug, category_id, specs JSONB, price_range, images[], is_featured）
-- `categories` — 品类表（name, slug, description, display_order）
-- `product_specs` — 产品规格详情（awg, conductor_material, insulation, jacket, certifications）
+```sql
+-- 品类表
+CREATE TABLE categories (
+  id          SERIAL PRIMARY KEY,
+  name        VARCHAR(50)   NOT NULL,          -- 英文名，如 "RVV"
+  name_zh     VARCHAR(50)   NOT NULL,          -- 中文名，如 "软护套电缆"
+  slug        VARCHAR(50)   NOT NULL UNIQUE,   -- URL 标识
+  description TEXT,                             -- 品类描述
+  display_order INT DEFAULT 0,
+  created_at  TIMESTAMPTZ   DEFAULT NOW()
+);
+
+-- 品牌表
+CREATE TABLE brands (
+  id          SERIAL PRIMARY KEY,
+  name        VARCHAR(100)  NOT NULL UNIQUE,   -- 品牌名
+  slug        VARCHAR(100)  NOT NULL UNIQUE,
+  logo_url    TEXT,                             -- 品牌 Logo
+  created_at  TIMESTAMPTZ   DEFAULT NOW()
+);
+
+-- 产品主表
+CREATE TABLE products (
+  id            SERIAL PRIMARY KEY,
+  name          VARCHAR(200) NOT NULL,          -- 英文名
+  name_zh       VARCHAR(200) NOT NULL,          -- 中文名
+  slug          VARCHAR(200) NOT NULL UNIQUE,   -- URL 标识
+  category_id   INT          NOT NULL REFERENCES categories(id),
+  brand_id      INT          NOT NULL REFERENCES brands(id),
+  price         DECIMAL(10,2) NOT NULL,         -- 单价
+  sales_count   INT          DEFAULT 0,         -- 销量（排序用）
+  is_new        BOOLEAN      DEFAULT FALSE,     -- 新品标记
+  is_featured   BOOLEAN      DEFAULT FALSE,     -- 首页推荐
+  images        TEXT[]       DEFAULT '{}',      -- 产品图片 URLs
+  description   TEXT,                            -- 产品描述
+  specs         JSONB        DEFAULT '{}',      -- 规格参数（灵活键值对）
+  stock         INT          DEFAULT 0,         -- 库存
+  created_at    TIMESTAMPTZ  DEFAULT NOW(),
+  updated_at    TIMESTAMPTZ  DEFAULT NOW()
+);
+
+-- 索引
+CREATE INDEX idx_products_category ON products(category_id);
+CREATE INDEX idx_products_brand ON products(brand_id);
+CREATE INDEX idx_products_price ON products(price);
+CREATE INDEX idx_products_sales ON products(sales_count DESC);
+CREATE INDEX idx_products_new ON products(is_new) WHERE is_new = TRUE;
+```
+
+**specs JSONB 结构示例**（对应前端 `<dl>` 规格网格）：
+
+```json
+[
+  { "label": "Cores", "value": "2 – 24" },
+  { "label": "Section", "value": "0.5 – 10 mm²" },
+  { "label": "Voltage", "value": "300 / 500 V" },
+  { "label": "Jacket", "value": "Eco-PVC" }
+]
+```
+
+**字段映射（前端 Product 接口 → 数据库）**：
+
+| 前端 `Product` | 数据库 `products` | 说明 |
+|---|---|---|
+| `id` | `id` | 主键 |
+| `name` | `name` | 英文名 |
+| `nameZh` | `name_zh` | 中文名 |
+| `category` | `category_id` (FK) | 关联 categories 表 |
+| `brand` | `brand_id` (FK) | 关联 brands 表 |
+| `price` | `price` | DECIMAL(10,2) |
+| `salesCount` | `sales_count` | 销量排序 |
+| `isNew` | `is_new` | 新品标记 |
+| `image` | `images[1]` | 取数组第一张 |
 
 ### API 路由设计
 
-- `GET /api/products` — 产品列表（支持 ?category= & ?featured=true）
-- `GET /api/products/{slug}` — 产品详情
-- `GET /api/categories` — 品类列表
-- `POST/PUT/DELETE /api/admin/products` — 后台产品管理（需认证）
+```
+GET  /api/products
+     查询参数: ?category_id=1
+              &brand_id=2
+              &min_price=10
+              &max_price=100
+              &sort=default|sales|price-desc|price-asc|newest
+              &page=1
+              &page_size=9
+     返回: { data: Product[], total: number, page: number, page_size: number }
+
+GET  /api/products/{slug}
+     返回: 单件产品详情
+
+GET  /api/categories
+     返回: Category[]
+
+GET  /api/brands
+     返回: Brand[]
+
+POST   /api/admin/products        # 新增产品（需认证）
+PUT    /api/admin/products/{id}   # 更新产品（需认证）
+DELETE /api/admin/products/{id}   # 删除产品（需认证）
+```
 
 ## 设计约束
 

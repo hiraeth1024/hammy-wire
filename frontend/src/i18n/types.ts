@@ -89,4 +89,27 @@ export interface Translations {
     message: string;
     link: string;
   };
+  shop: {
+    title: string;
+    filters: string;
+    clearAll: string;
+    price: string;
+    minPrice: string;
+    maxPrice: string;
+    apply: string;
+    category: string;
+    brand: string;
+    allCategories: string;
+    allBrands: string;
+    sortBy: string;
+    sortDefault: string;
+    sortSales: string;
+    sortPriceDesc: string;
+    sortPriceAsc: string;
+    sortNewest: string;
+    gridSize: string;
+    productsFound: string;
+    prev: string;
+    next: string;
+  };
 }
