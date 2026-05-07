@@ -218,7 +218,7 @@ const en: Translations = {
     comingSoon: "Coming soon",
   },
   shop: {
-    title: "Shop",
+    title: "Products",
     filters: "Filters",
     clearAll: "Clear All",
     price: "Price Range",
